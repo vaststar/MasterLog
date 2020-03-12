@@ -2,9 +2,7 @@ cmake_minimum_required(VERSION 3.1)
 
 project(THZHU CXX)
 
-set(CMAKE_CXX_STANDARD 11)
-
-if(CMAKE_BUILD_TYPE MATCHES "Debug" OR CMAKE_BUILD_TYPE MATCHES "None")
+if(CMAKE_BUILD_TYPE MATCHES "Debug")
     message(STATUS "debug mode")
     set(CMAKE_INSTALL_PREFIX ${CMAKE_CURRENT_LIST_DIR}/install/Debug)
 else()

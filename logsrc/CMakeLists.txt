@@ -43,3 +43,5 @@ install(EXPORT ${PROJECT_NAME}Config
         DESTINATION cmake
         NAMESPACE MasterLogExport::
         )
+##for project tree view
+source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${TARGET_SOURCE})

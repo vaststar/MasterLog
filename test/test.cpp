@@ -9,11 +9,12 @@
 
 void testConsoleLog()
 {
-	initLog(ALL_LOG_LEVEL,(int)MasterLog::LogAppenderType::CONSOLE);
+	initConsoleLog();
+	TEST_LOG_DEBUG("startTest");
 	std::list<std::thread> aaa;
-	for (int i = 0;i < 200 ;++i)
+	for (int i = 0;i < 300 ;++i)
 	{
-		TEST_LOG_DEBUG("test: "<<i);
+		//TEST_LOG_DEBUG("test: "<<i);
 		aaa.emplace_back([i]() {
 			TEST_LOG_DEBUG(i);
 		});
@@ -27,7 +28,7 @@ void testConsoleLog()
 }
 void testFileLog()
 {
-	initLog(ALL_LOG_LEVEL,(int)MasterLog::LogAppenderType::FILE,"/");
+	initFileLog("./test");
 	std::list<std::thread> aaa;
 	for (int i = 0;i < 200 ;++i)
 	{

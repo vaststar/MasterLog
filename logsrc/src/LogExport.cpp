@@ -7,7 +7,16 @@ void WriteLog(const std::string &logTag, MasterLog::LogLevel logLevel, const std
     MasterLog::LogControl::getInstance()->writeLog(logTag,logLevel,filePath,lineNumber,functionName,logMessage);
 }
 
-void initLog(int logLevels, int logTypes, const std::string &fullPath)
+void initAllLogs(const std::string &fullPath, int logLevels , int maxKeepDays)
 {
-    MasterLog::LogControl::getInstance()->initLogger(logLevels,logTypes,fullPath); 
+    initConsoleLog(logLevels);
+    initFileLog(fullPath, logLevels, maxKeepDays);
+}
+void initConsoleLog(int logLevels )
+{
+    MasterLog::LogControl::getInstance()->initConsoleLogger(logLevels); 
+}
+void initFileLog(const std::string &fullPath, int logLevels , int maxKeepDays)
+{
+    MasterLog::LogControl::getInstance()->initFileLogger(logLevels,fullPath,maxKeepDays); 
 }

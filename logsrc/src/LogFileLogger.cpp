@@ -3,8 +3,11 @@
 //#include <experimental/filesystem>
 
 namespace MasterLog{
-    LogFileLogger::LogFileLogger(const std::string &logFilePath)
-        :m_logFilePath(logFilePath)
+    LogFileLogger::LogFileLogger(int logLevels, const std::string &logFullPath, int maxKeepDays)
+        :LogBaseLogger(logLevels)
+        ,m_logFilePath(logFullPath)
+        ,m_logLevels(logLevels)
+        ,m_maxKeepDays(maxKeepDays)
     {
 
     }

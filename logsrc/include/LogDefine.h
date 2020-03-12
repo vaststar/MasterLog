@@ -1,15 +1,6 @@
 #ifndef __LogDefine_h__
 #define __LogDefine_h__
 
-#ifdef MASTERLOG_DLL
-#ifdef MASTERLOG_LIB
-#define LOG_LIB_API _declspec(dllexport)
-#else
-#define LOG_LIB_API _declspec(dllimport)
-#endif
-#else 
-#define LOG_LIB_API 
-#endif
 namespace MasterLog{
     enum class LogLevel{
         LOG_DEBUG = 1 << 0,

@@ -7,7 +7,7 @@ namespace MasterLog{
     class LogConsoleLogger: public LogBaseLogger
     {
     public:
-        LogConsoleLogger();
+        explicit LogConsoleLogger(int loggerLevels);
         ~LogConsoleLogger()=default;
         LogAppenderType getLoggerType()const override;
     protected:

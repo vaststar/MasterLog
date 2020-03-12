@@ -22,75 +22,44 @@ std::shared_ptr<LogControl> LogControl::getInstance()
 }
 
 LogControl::LogControl()
-    :m_logLevels(0)
-    ,m_logTypes(0)
 {
 
 }
 
 LogControl::~LogControl()
 {
-    m_logLevels.store(0);
-    m_logTypes.store(0);
     std::lock_guard<std::mutex> lo(m_loggerMutex);
     m_currentLogger.clear();
 }
 
-void LogControl::initLogger(int logLevel, int logTypes, const std::string &logFullPath)
+void LogControl::initConsoleLogger(int logLevels)
 {
-    static std::once_flag init_flag;
-    std::call_once(init_flag, [&,this]() {
-        m_logLevels.store(logLevel);
-        m_logTypes.store(logTypes);
-        m_logFullPath = logFullPath;
-        createLoggers();
+    static std::once_flag init_console_flag;
+    std::call_once(init_console_flag, [logLevels,this]() {
+        std::lock_guard<std::mutex> lo(m_loggerMutex);
+        m_currentLogger.emplace_back(std::make_shared<LogConsoleLogger>(logLevels));
+        m_currentLogger.back()->startLog();
     });
 }
 
-void LogControl::createLoggers()
+void LogControl::initFileLogger( int logLevels, const std::string &logFullPath, int maxKeepDays)
 {
-    std::lock_guard<std::mutex> lo(m_loggerMutex);
-    if(m_logTypes & LogAppenderType::CONSOLE)
-    {
-        m_currentLogger.emplace_back(std::make_shared<LogConsoleLogger>());
-    }
-    if(m_logTypes & LogAppenderType::FILE)
-    {
-        m_currentLogger.emplace_back(std::make_shared<LogFileLogger>(m_logFullPath));
-    }
-    std::for_each(m_currentLogger.begin(),m_currentLogger.end(),[](std::shared_ptr<LogBaseLogger> info){
-        info->startLog();
+    static std::once_flag init_file_flag;
+    std::call_once(init_file_flag, [logLevels,logFullPath,maxKeepDays,this]() {
+        std::lock_guard<std::mutex> lo(m_loggerMutex);
+        m_currentLogger.emplace_back(std::make_shared<LogFileLogger>(logLevels,logFullPath,maxKeepDays));
+        m_currentLogger.back()->startLog();
     });
-}
-const std::string &LogControl::getRootPath()const
-{
-    return m_logFullPath;
-}
-
-int LogControl::getLogLevels()const
-{
-    return m_logLevels.load();
-}
-
-int LogControl::getLogTypes()const
-{
-    return m_logTypes.load();
 }
 
 void LogControl::writeLog(const std::string &logTag, LogLevel logLevel, const std::string &filePath, 
               int lineNumber,const std::string &functionName, const std::string &logMessage)
 {
-    if(m_logLevels.load() & logLevel)
-    {
-        std::string messageLog = formatMessage(logTag,logLevel,filePath,lineNumber,functionName,logMessage);
-        std::lock_guard<std::mutex> lo(m_loggerMutex);
-        std::for_each(m_currentLogger.begin(),m_currentLogger.end(),[&messageLog,this](std::shared_ptr<LogBaseLogger> logger){
-            if(m_logTypes.load() & logger->getLoggerType())
-            {
-                logger->appendLog(messageLog);
-            }
-        });
-    }
+    std::string messageLog = formatMessage(logTag,logLevel,filePath,lineNumber,functionName,logMessage);
+    std::lock_guard<std::mutex> lo(m_loggerMutex);
+    std::for_each(m_currentLogger.begin(),m_currentLogger.end(),[logLevel,&messageLog,this](std::shared_ptr<LogBaseLogger> logger){
+        logger->appendLog(logLevel,messageLog);
+    });
 }
 std::string LogControl::formatMessage(const std::string &logTag, LogLevel logLevel, const std::string &filePath, 
                           int lineNumber,const std::string &functionName, const std::string &logMessage)const

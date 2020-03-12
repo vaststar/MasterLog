@@ -2,7 +2,8 @@
 #include <iostream>
 
 namespace MasterLog{
-    LogConsoleLogger::LogConsoleLogger()
+    LogConsoleLogger::LogConsoleLogger(int loggerLevels)
+        :LogBaseLogger(loggerLevels)
     {
 
     }

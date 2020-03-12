@@ -15,10 +15,10 @@ namespace MasterLog{
     class LogBaseLogger
     {
     public:
-        LogBaseLogger();
+        explicit LogBaseLogger(int loglevels);
         virtual ~LogBaseLogger();
         virtual LogAppenderType getLoggerType()const = 0;
-        void appendLog(std::string message);
+        void appendLog(LogLevel loggerLevel, std::string message);
         void startLog();
     protected:
         virtual void initialize() = 0;
@@ -26,6 +26,7 @@ namespace MasterLog{
     private:
         void doWorkFunction();
     private:
+        int m_loggerLevels;
         std::condition_variable m_condition;
         std::mutex m_dataMutex;
         std::atomic<bool> m_isInExit;

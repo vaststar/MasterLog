@@ -11,22 +11,16 @@
 #include "LogBaseLogger.h"
 
 namespace MasterLog{
-    class LOG_LIB_API LogControl
+    class LogControl
     {
     public:
         static std::shared_ptr<LogControl> getInstance();
 
-        void initLogger(int logLevel, int logTypes, const std::string &logFullPath);
+        void initConsoleLogger(int logLevels);
+        void initFileLogger( int logLevels, const std::string &logFullPath, int maxKeepDays);
         void writeLog(const std::string &logTag, LogLevel logLevel, const std::string &filePath, 
                       int lineNumber,const std::string &functionName, const std::string &logMessage);
-    public:
-        const std::string &getRootPath()const;
-        int getLogLevels()const;
-        int getLogTypes()const;
     private:
-        std::atomic<int> m_logLevels;
-        std::atomic<int> m_logTypes;
-        std::string m_logFullPath;
         std::mutex m_loggerMutex;
         std::list<std::shared_ptr<LogBaseLogger>> m_currentLogger;
     private:

@@ -1,8 +1,9 @@
 #include "LogBaseLogger.h"
 
 namespace MasterLog{
-    LogBaseLogger::LogBaseLogger()
+    LogBaseLogger::LogBaseLogger(int loglevels)
         :m_isInExit(false)
+        ,m_loggerLevels(loglevels)
     {
 
     }
@@ -18,12 +19,13 @@ namespace MasterLog{
     {
         static std::once_flag start_flag;
         std::call_once(start_flag, [&,this]() {
+            initialize();
             m_workThread = std::make_shared<std::thread>(std::bind(&LogBaseLogger::doWorkFunction,this));
         });
     }
-    void LogBaseLogger::appendLog( std::string message)
+    void LogBaseLogger::appendLog( LogLevel loggerLevel, std::string message)
     {
-        if(m_isInExit.load())
+        if(m_isInExit.load() || !(loggerLevel & m_loggerLevels))
         {
             return;
         }
