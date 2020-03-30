@@ -42,12 +42,12 @@ void LogControl::initConsoleLogger(int logLevels)
     });
 }
 
-void LogControl::initFileLogger( int logLevels, const std::string &logFullPath, int maxKeepDays)
+void LogControl::initFileLogger( int logLevels, const std::string &logFullPath, unsigned int maxKeepDays, unsigned int maxSingleFileSize)
 {
     static std::once_flag init_file_flag;
-    std::call_once(init_file_flag, [logLevels,logFullPath,maxKeepDays,this]() {
+    std::call_once(init_file_flag, [logLevels,logFullPath,maxKeepDays,maxSingleFileSize,this]() {
         std::lock_guard<std::mutex> lo(m_loggerMutex);
-        m_currentLogger.emplace_back(std::make_shared<LogFileLogger>(logLevels,logFullPath,maxKeepDays));
+        m_currentLogger.emplace_back(std::make_shared<LogFileLogger>(logLevels,logFullPath,maxKeepDays,maxSingleFileSize));
         m_currentLogger.back()->startLog();
     });
 }

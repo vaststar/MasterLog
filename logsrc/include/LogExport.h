@@ -22,9 +22,9 @@ static const int EXCLUDE_DEBUG_LOG_LEVEL = MasterLog::LogLevel::LOG_INFO|MasterL
 
 LOG_LIB_API void WriteLog(const std::string &logTag, MasterLog::LogLevel logLevel, const std::string &filePath, 
                           int lineNumber, const std::string &functionName, const std::string &logMessage);
-LOG_LIB_API void initAllLogs(const std::string &fullPath, int logLevels = ALL_LOG_LEVEL, int maxKeepDays = 30);
+LOG_LIB_API void initAllLogs(const std::string &fullPath, int logLevels = ALL_LOG_LEVEL, unsigned int maxKeepDays = 365, unsigned int maxSingleFileSize = 20*1024*1024);
 LOG_LIB_API void initConsoleLog(int logLevels = ALL_LOG_LEVEL);
-LOG_LIB_API void initFileLog(const std::string &fullPath, int logLevels = ALL_LOG_LEVEL, int maxKeepDays = 30);
+LOG_LIB_API void initFileLog(const std::string &fullPath, int logLevels = ALL_LOG_LEVEL, unsigned int maxKeepDays = 365, unsigned int maxSingleFileSize = 20*1024*1024);
 
 
 #define LOG_DEBUG(logTag,logMessage) {std::ostringstream _oss; _oss << logMessage;WriteLog(logTag,MasterLog::LogLevel::LOG_DEBUG,__FILE__,__LINE__,__FUNCTION__,_oss.str());}

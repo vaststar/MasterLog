@@ -17,7 +17,7 @@ namespace MasterLog{
         static std::shared_ptr<LogControl> getInstance();
 
         void initConsoleLogger(int logLevels);
-        void initFileLogger( int logLevels, const std::string &logFullPath, int maxKeepDays);
+        void initFileLogger( int logLevels, const std::string &logFullPath, unsigned int maxKeepDays, unsigned int maxSingleFileSize);
         void writeLog(const std::string &logTag, LogLevel logLevel, const std::string &filePath, 
                       int lineNumber,const std::string &functionName, const std::string &logMessage);
     private:

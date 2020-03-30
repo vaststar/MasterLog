@@ -18,7 +18,6 @@ void testConsoleLog()
 		aaa.emplace_back([i]() {
 			TEST_LOG_DEBUG(i);
 		});
-
 	}
 	for (auto it = aaa.begin();it != aaa.end();++it)
 	{
@@ -28,11 +27,11 @@ void testConsoleLog()
 }
 void testFileLog()
 {
-	initFileLog("./test");
+	initFileLog(".\\hhh\\tedir\\test",ALL_LOG_LEVEL,365,2*1024*1024);
 	std::list<std::thread> aaa;
 	for (int i = 0;i < 200 ;++i)
 	{
-		TEST_LOG_DEBUG("test: "<<i);
+		//TEST_LOG_DEBUG("test: "<<i);
 		aaa.emplace_back([i]() {
 			TEST_LOG_DEBUG(i);
 		});
