@@ -101,7 +101,7 @@ std::string LogControl::formatMessage(const std::string &logTag, LogLevel logLev
     std::string fileString = filePath + "(" + std::to_string(lineNumber) + ")";
     if(fileString.length() > 40)
     {
-        fileString.substr(fileString.length()-40,40);
+        fileString = fileString.substr(fileString.length()-40,40);
     }
     else if(fileString.length() < 40)
     {

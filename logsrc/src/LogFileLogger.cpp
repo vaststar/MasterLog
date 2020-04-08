@@ -13,13 +13,15 @@
 #ifdef WIN32
     #include <io.h>
     #include <direct.h>
+    #include <Windows.h>
 #else
     #include <unistd.h>
     #include <dirent.h>
 #endif
+
 #ifdef __APPLE__
     #include <sys/uio.h>
-#else
+#elif defined(__linux__)
     #include <sys/io.h>
 #endif
 
@@ -64,7 +66,7 @@ namespace MasterLog{
     }
     void LogFileLogger::processMessage( std::string message) 
     {
-        if(readyForLog(message.size()) && m_currentFile.is_open())
+        if(readyForLog(static_cast<unsigned int>(message.size())) && m_currentFile.is_open())
         {
             m_currentFile<<message;
         }
@@ -137,7 +139,7 @@ namespace MasterLog{
         if (hFind != INVALID_HANDLE_VALUE) {
             do {
 	    		struct stat statBuf;
-	    		const std::string fullfilename = dirname + PATHDELIMITER + ffd.cFileName;
+	    		const std::string fullfilename = dirname + SPLITSTR + ffd.cFileName;
 	    		int res = ::stat(fullfilename.c_str(), &statBuf);
                 if (res != -1 && !(ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)) {
 	    		    resultVec.emplace_back(fullfilename);
@@ -197,7 +199,7 @@ namespace MasterLog{
                 time_t file_time = std::mktime(&tm);
                 std::chrono::system_clock::time_point tp = std::chrono::system_clock::now();
 	            time_t raw_time = std::chrono::system_clock::to_time_t(tp);
-                if(std::abs(difftime(raw_time,file_time)) > m_maxKeepDays*24*3600)
+                if(std::abs(difftime(raw_time,file_time)) > static_cast<double>(m_maxKeepDays)*24*3600)
                 {
                     std::cout<<"delete too old file:"<<filePath<<std::endl;
                     ::unlink(filePath.c_str());

@@ -1,4 +1,5 @@
 #include "LogBaseLogger.h"
+#include <functional>
 
 namespace MasterLog{
     LogBaseLogger::LogBaseLogger(int loglevels)
