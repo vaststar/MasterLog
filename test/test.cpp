@@ -35,7 +35,6 @@ void testFileLog()
 		aaa.emplace_back([i]() {
 			TEST_LOG_DEBUG(i);
 		});
-
 	}
 	for (auto it = aaa.begin();it != aaa.end();++it)
 	{
