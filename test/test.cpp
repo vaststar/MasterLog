@@ -27,7 +27,7 @@ void testConsoleLog()
 }
 void testFileLog()
 {
-	initFileLog(".\\hhh\\tedir\\test",ALL_LOG_LEVEL,365,2*1024*1024);
+	initFileLog(".\\testMkdir\\tedir\\test",ALL_LOG_LEVEL,365,2*1024*1024);
 	std::list<std::thread> aaa;
 	for (int i = 0;i < 200 ;++i)
 	{
