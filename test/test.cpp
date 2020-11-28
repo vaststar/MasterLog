@@ -55,6 +55,11 @@ int main(int argc,char *argv[])
 		{
 			testFileLog();
 		}
+		else if(std::string(argv[1]) == "testConsoleFileLog")
+		{
+			testConsoleLog();
+			testFileLog();
+		}
 	}
 	return 0;
 }

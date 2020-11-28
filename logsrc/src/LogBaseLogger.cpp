@@ -13,12 +13,14 @@ namespace MasterLog{
     {
         m_isInExit.store(true);
         m_condition.notify_one();
-        m_workThread->join();
+        if(m_workThread)
+        {
+            m_workThread->join();
+        }
     }
 
     void LogBaseLogger::startLog()
     {
-        static std::once_flag start_flag;
         std::call_once(start_flag, [&,this]() {
             initialize();
             m_workThread = std::make_shared<std::thread>(std::bind(&LogBaseLogger::doWorkFunction,this));
