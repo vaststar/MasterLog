@@ -1,8 +1,10 @@
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.10)
 project(MasterLog VERSION 1.0
                   DESCRIPTION "thread-safe logger"
                   LANGUAGES CXX
         )
+
+configure_file(${PROJECT_NAME}Config.h.in ${PROJECT_NAME}Config.h)
 
 set(TARGET_SOURCE 
         include/LogBaseLogger.h

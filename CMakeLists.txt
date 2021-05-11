@@ -1,6 +1,7 @@
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.10)
 
-project(logger CXX)
+project(logger  VERSION 1.0 
+                LANGUAGES CXX)
 
 if(CMAKE_BUILD_TYPE MATCHES "Debug")
     message(STATUS "build MasterLog with Debug mode")
