@@ -1,2 +1,2 @@
-#define MasterLog_VERSION_MAJOR @MasterLog_VERSION_MAJOR@
-#define MasterLog_VERSION_MINOR @MasterLog_VERSION_MINOR@
+#cmakedefine MasterLog_VERSION_MAJOR "@MasterLog_VERSION_MAJOR@"
+#cmakedefine MasterLog_VERSION_MINOR "@MasterLog_VERSION_MINOR@"

@@ -1,13 +1,16 @@
-
-
-
-set(CMAKE_CXX_STANDARD 11)
-aux_source_directory(${CMAKE_CURRENT_LIST_DIR} DIR_SRCS)
+cmake_minimum_required(VERSION 3.11)
+project(testLog)
 
 #build exe
-add_executable(testLog ${DIR_SRCS})
+aux_source_directory(${CMAKE_CURRENT_LIST_DIR} DIR_SRCS)
+add_executable(${PROJECT_NAME} ${DIR_SRCS})
+target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
+target_link_libraries(${PROJECT_NAME} PRIVATE MasterLog)
 
-target_link_libraries(testLog PRIVATE MasterLog)
+add_test (NAME test_log1 COMMAND ${PROJECT_NAME} testConsoleLog)
+add_test (NAME test_log2 COMMAND ${PROJECT_NAME} testFileLog)
 
-add_test (NAME test_log1 COMMAND testLog testConsoleLog)
-add_test (NAME test_log2 COMMAND testLog testFileLog)
+install(TARGETS ${PROJECT_NAME} 
+		RUNTIME DESTINATION ${PROJECT_NAME}/bin
+		LIBRARY DESTINATION ${PROJECT_NAME}/bin
+		ARCHIVE DESTINATION ${PROJECT_NAME}/lib)
