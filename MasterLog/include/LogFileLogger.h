@@ -6,10 +6,10 @@
 #include "LogDefine.h"
 #include "LogBaseLogger.h"
 namespace MasterLog{
-    class LogFileLogger: public LogBaseLogger
+    class LogFileLogger final: public LogBaseLogger
     {
     public:
-        explicit LogFileLogger(int logLevels, const std::string &logFullPath, unsigned int maxKeepDays, unsigned int maxSignleSize);
+        LogFileLogger(int logLevels, const std::string &logFullPath, unsigned int maxKeepDays, unsigned int maxSignleSize);
         ~LogFileLogger();
         LogAppenderType getLoggerType()const override;
     protected:

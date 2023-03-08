@@ -21,11 +21,6 @@ std::shared_ptr<LogControl> LogControl::getInstance()
     return _instance;
 }
 
-LogControl::LogControl()
-{
-
-}
-
 LogControl::~LogControl()
 {
     std::lock_guard<std::mutex> lo(m_loggerMutex);

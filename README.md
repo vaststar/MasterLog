@@ -19,10 +19,13 @@ A very nice log in c++11 written by Thomas Zhu.
 * use log macro in your code, eg `TEST_LOG_DEBUG("testlog"<<111);`
 
 # Requirement
-* >= c++11
-* >= cmake3.1
+* >= c++20
+* >= cmake3.11
 
 # Install
 * make and cd in `build` dir
 * run commond: `cmake .. && make && make install`
 
+# Test
+* make and cd in `build` dir
+* run commond: `cmake .. && make && ctest -V`

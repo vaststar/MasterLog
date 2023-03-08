@@ -4,7 +4,7 @@
 #include "LogDefine.h"
 #include "LogBaseLogger.h"
 namespace MasterLog{
-    class LogConsoleLogger: public LogBaseLogger
+    class LogConsoleLogger final: public LogBaseLogger
     {
     public:
         explicit LogConsoleLogger(int loggerLevels);

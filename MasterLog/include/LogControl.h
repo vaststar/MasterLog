@@ -11,7 +11,7 @@
 #include "LogBaseLogger.h"
 
 namespace MasterLog{
-    class LogControl
+    class LogControl final
     {
     public:
         static std::shared_ptr<LogControl> getInstance();
@@ -28,7 +28,7 @@ namespace MasterLog{
         std::string formatMessage(const std::string &logTag, LogLevel logLevel, const std::string &filePath, 
                                   int lineNumber,const std::string &functionName, const std::string &logMessage)const;
     private:
-        LogControl();
+        LogControl() = default;
         static std::shared_ptr<LogControl> _instance;
     public:
         LogControl(const LogControl &rhs) = delete;

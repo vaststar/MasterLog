@@ -12,7 +12,7 @@ void testConsoleLog()
 	initConsoleLog();
 	TEST_LOG_DEBUG("startTest");
 	std::list<std::thread> aaa;
-	for (int i = 0;i < 300 ;++i)
+	for (int i = 0;i < 3000 ;++i)
 	{
 		//TEST_LOG_DEBUG("test: "<<i);
 		aaa.emplace_back([i]() {
@@ -23,13 +23,13 @@ void testConsoleLog()
 	{
 		(*it).join();
 	}
-	std::this_thread::sleep_for(std::chrono::seconds(1));
+	std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 void testFileLog()
 {
 	initFileLog(".\\testMkdir\\tedir\\test",ALL_LOG_LEVEL,365,2*1024*1024);
 	std::list<std::thread> aaa;
-	for (int i = 0;i < 200 ;++i)
+	for (int i = 0;i < 2000 ;++i)
 	{
 		//TEST_LOG_DEBUG("test: "<<i);
 		aaa.emplace_back([i]() {
@@ -40,7 +40,7 @@ void testFileLog()
 	{
 		(*it).join();
 	}
-	std::this_thread::sleep_for(std::chrono::seconds(1));
+	std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
 }
 int main(int argc,char *argv[])

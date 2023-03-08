@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(logger  VERSION 1.0 
+project(loggerProject  VERSION 1.0 
                 LANGUAGES CXX
 )
 if (NOT CMAKE_BUILD_TYPE)
@@ -23,10 +23,10 @@ set(CMAKE_DEBUG_POSTFIX "_d")
 set(CMAKE_RELEASE_POSTFIX "_r")
 
 if (WIN32)
-  #set(CMAKE_SHARED_LIBRARY_PREFIX "")
+  set(CMAKE_SHARED_LIBRARY_PREFIX "")
 endif ()
 
-add_subdirectory(logsrc)
+add_subdirectory(MasterLog)
 
 #test log
 enable_testing()
