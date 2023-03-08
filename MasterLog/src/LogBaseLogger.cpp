@@ -18,6 +18,7 @@ namespace MasterLog{
         {
             m_workThread->join();
         }
+        std::lock_guard<std::mutex> loc(m_witeMutex);
     }
 
     void LogBaseLogger::startLog()

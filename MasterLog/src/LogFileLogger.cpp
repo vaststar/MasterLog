@@ -69,6 +69,7 @@ namespace MasterLog{
         if(readyForLog(static_cast<unsigned int>(message.size())) && m_currentFile.is_open())
         {
             m_currentFile<<message;
+            m_currentFile.flush();
         }
     }
 
