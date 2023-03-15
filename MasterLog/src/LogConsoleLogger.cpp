@@ -1,7 +1,7 @@
 #include "LogConsoleLogger.h"
 #include <iostream>
 
-namespace MasterLog{
+namespace LogLogSpace{
     LogConsoleLogger::LogConsoleLogger(int loggerLevels)
         :LogBaseLogger(loggerLevels)
     {

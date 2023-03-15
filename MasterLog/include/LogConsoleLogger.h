@@ -3,7 +3,7 @@
 #include <string>
 #include "LogDefine.h"
 #include "LogBaseLogger.h"
-namespace MasterLog{
+namespace LogLogSpace{
     class LogConsoleLogger final: public LogBaseLogger
     {
     public:

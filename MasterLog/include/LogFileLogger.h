@@ -5,7 +5,7 @@
 #include <vector>
 #include "LogDefine.h"
 #include "LogBaseLogger.h"
-namespace MasterLog{
+namespace LogLogSpace{
     class LogFileLogger final: public LogBaseLogger
     {
     public:

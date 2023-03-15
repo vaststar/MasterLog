@@ -1,4 +1,7 @@
 
+#include "LogBaseLogger.h"
+#include "LogControl.h"
+
 #include <mutex>
 #include <thread>
 #include <chrono>
@@ -6,11 +9,10 @@
 #include <iomanip>
 #include <sstream>
 
-#include "LogControl.h"
 #include "LogConsoleLogger.h"
 #include "LogFileLogger.h"
 
-namespace MasterLog{
+namespace LogLogSpace{
 std::shared_ptr<LogControl> LogControl::_instance = nullptr;
 std::shared_ptr<LogControl> LogControl::getInstance()
 {
@@ -32,7 +34,7 @@ void LogControl::initConsoleLogger(int logLevels)
     static std::once_flag init_console_flag;
     std::call_once(init_console_flag, [logLevels,this]() {
         std::scoped_lock<std::mutex> lo(m_loggerMutex);
-        m_currentLogger.emplace_back(std::make_shared<LogConsoleLogger>(logLevels));
+        m_currentLogger.emplace_back(std::make_unique<LogConsoleLogger>(logLevels));
         m_currentLogger.back()->startLog();
     });
 }
@@ -42,7 +44,7 @@ void LogControl::initFileLogger( int logLevels, const std::string& logFullPath, 
     static std::once_flag init_file_flag;
     std::call_once(init_file_flag, [logLevels,logFullPath,maxKeepDays,maxSingleFileSize,this]() {
         std::scoped_lock<std::mutex> lo(m_loggerMutex);
-        m_currentLogger.emplace_back(std::make_shared<LogFileLogger>(logLevels,logFullPath,maxKeepDays,maxSingleFileSize));
+        m_currentLogger.emplace_back(std::make_unique<LogFileLogger>(logLevels,logFullPath,maxKeepDays,maxSingleFileSize));
         m_currentLogger.back()->startLog();
     });
 }
@@ -52,7 +54,7 @@ void LogControl::writeLog(const std::string& logTag, LogLevel logLevel, const st
 {
     std::string messageLog = formatMessage(logTag,logLevel,filePath,lineNumber,functionName,logMessage);
     std::scoped_lock<std::mutex> lo(m_loggerMutex);
-    std::for_each(m_currentLogger.begin(),m_currentLogger.end(),[logLevel,&messageLog,this](std::shared_ptr<LogBaseLogger> logger){
+    std::for_each(m_currentLogger.begin(),m_currentLogger.end(),[logLevel,&messageLog,this](std::unique_ptr<LogBaseLogger>& logger){
         logger->appendLog(logLevel,messageLog);
     });
 }

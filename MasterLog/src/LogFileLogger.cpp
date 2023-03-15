@@ -1,4 +1,5 @@
 #include "LogFileLogger.h"
+
 #include <stdio.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -33,7 +34,7 @@ static const std::string SPLITSTR = "/";
 static const std::string ERROR_SPLITSTR = "\\\\";
 #endif
 
-namespace MasterLog{
+namespace LogLogSpace{
     LogFileLogger::LogFileLogger(int logLevels, const std::string& logFullPath, unsigned int maxKeepDays, unsigned int maxSignleSize)
         :LogBaseLogger(logLevels)
         ,m_logFilePath(logFullPath)

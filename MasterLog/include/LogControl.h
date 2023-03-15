@@ -2,15 +2,15 @@
 #define __LogControl_h__
 
 #include <memory>
-#include <atomic>
 #include <string>
 #include <list>
 #include <mutex>
 
 #include "LogDefine.h"
-#include "LogBaseLogger.h"
 
-namespace MasterLog{
+class LogBaseLogger;
+
+namespace LogLogSpace{
     class LogControl final
     {
     public:
@@ -22,7 +22,7 @@ namespace MasterLog{
                       int lineNumber,const std::string& functionName, const std::string& logMessage);
     private:
         std::mutex m_loggerMutex;
-        std::list<std::shared_ptr<LogBaseLogger>> m_currentLogger;
+        std::list<std::unique_ptr<LogBaseLogger>> m_currentLogger;
     private:
         void createLoggers();
         std::string formatMessage(const std::string& logTag, LogLevel logLevel, const std::string& filePath, 

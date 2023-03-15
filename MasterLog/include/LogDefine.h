@@ -1,7 +1,7 @@
 #ifndef __LogDefine_h__
 #define __LogDefine_h__
 
-namespace MasterLog{
+namespace LogLogSpace{
     enum class LogLevel{
         LOG_DEBUG = 1 << 0,
         LOG_INFO = 1 << 1,

@@ -1,17 +1,15 @@
 #ifndef __LogBaseLogger_h__
 #define __LogBaseLogger_h__
 
-#include <atomic>
 #include <string>
 #include <queue>
 #include <memory>
 #include <thread>
 #include <mutex>
-#include <thread>
 #include <condition_variable>
 #include "LogDefine.h"
 
-namespace MasterLog{
+namespace LogLogSpace{
     class LogBaseLogger
     {
     public:
@@ -29,7 +27,7 @@ namespace MasterLog{
         int m_loggerLevels;
         std::condition_variable m_condition;
         std::mutex m_dataMutex;
-        std::atomic<bool> m_isInExit;
+        bool m_isInExit;
         std::once_flag start_flag;
         std::queue<std::string> m_logMessages;
         std::unique_ptr<std::thread> m_workThread;

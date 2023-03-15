@@ -15,7 +15,7 @@ A very nice log in c++11 written by Thomas Zhu.
 ## Using in code
 * `#include "LogExport.h"`
 * define your own macro with log-tag like `#define TEST_LOG_DEBUG(message) LOG_DEBUG("TEST_LOG_TAG",message)`
-* init log type , console: `initConsoleLog();`; filelog: `initFileLog(".\\hhh\\tedir\\test",ALL_LOG_LEVEL,365,2*1024*1024);`
+* init log type , console: `initConsoleLog();`; filelog: `MasterLogUtil::initFileLog(".\\hhh\\tedir\\test",MasterLogUtil::ALL_LOG_LEVEL,365,2*1024*1024);`
 * use log macro in your code, eg `TEST_LOG_DEBUG("testlog"<<111);`
 
 # Requirement

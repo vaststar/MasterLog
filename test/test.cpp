@@ -9,7 +9,7 @@
 
 void testConsoleLog()
 {
-	initConsoleLog();
+	MasterLogUtil::initConsoleLog();
 	TEST_LOG_DEBUG("startTest");
 	std::list<std::thread> aaa;
 	for (int i = 0;i < 3000 ;++i)
@@ -27,7 +27,7 @@ void testConsoleLog()
 }
 void testFileLog()
 {
-	initFileLog(".\\testMkdir\\tedir\\test",ALL_LOG_LEVEL,365,2*1024*1024);
+	MasterLogUtil::initFileLog(".\\testMkdir\\tedir\\test",MasterLogUtil::ALL_LOG_LEVEL,365,2*1024*1024);
 	std::list<std::thread> aaa;
 	for (int i = 0;i < 2000 ;++i)
 	{

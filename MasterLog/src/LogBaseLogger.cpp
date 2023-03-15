@@ -1,8 +1,10 @@
 #include "LogBaseLogger.h"
+
 #include <functional>
+
 #include "MasterLogConfig.h"
 
-namespace MasterLog{
+namespace LogLogSpace{
     LogBaseLogger::LogBaseLogger(int loglevels)
         :m_isInExit(false)
         ,m_loggerLevels(loglevels)
@@ -12,8 +14,11 @@ namespace MasterLog{
 
     LogBaseLogger::~LogBaseLogger()
     {
-        m_isInExit.store(true);
-        m_condition.notify_one();
+        {
+            std::scoped_lock<std::mutex> loc(m_dataMutex);
+            m_isInExit = true;
+            m_condition.notify_one();
+        }
         if(m_workThread)
         {
             m_workThread->join();
@@ -33,25 +38,24 @@ namespace MasterLog{
     }
     void LogBaseLogger::appendLog( LogLevel loggerLevel, const std::string& message)
     {
-        if(m_isInExit.load() || !(loggerLevel & m_loggerLevels))
+        std::scoped_lock<std::mutex> loc(m_dataMutex);
+        if(m_isInExit || !(loggerLevel & m_loggerLevels))
         {
             return;
         }
-        {
-            std::scoped_lock<std::mutex> loc(m_dataMutex);
-            m_logMessages.emplace(message);
-        }
+        m_logMessages.push(message);
         m_condition.notify_one();
     }
+
     void LogBaseLogger::doWorkFunction()
     {
-        while (!m_isInExit.load())
+        while (true)
         {
             std::string currentLog = "";
             {
                 std::unique_lock<std::mutex> guard(m_dataMutex);
-                m_condition.wait(guard,[this](){return !m_logMessages.empty() || m_isInExit.load();});
-                if(m_isInExit.load())
+                m_condition.wait(guard,[this](){return !m_logMessages.empty() || m_isInExit;});
+                if(m_isInExit)
                 {
                     return;
                 }
