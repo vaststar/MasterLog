@@ -18,7 +18,7 @@ namespace MasterLog{
         {
             m_workThread->join();
         }
-        std::lock_guard<std::mutex> loc(m_witeMutex);
+        std::scoped_lock<std::mutex> loc(m_witeMutex);
     }
 
     void LogBaseLogger::startLog()
@@ -31,14 +31,14 @@ namespace MasterLog{
 #endif
         });
     }
-    void LogBaseLogger::appendLog( LogLevel loggerLevel, std::string message)
+    void LogBaseLogger::appendLog( LogLevel loggerLevel, const std::string& message)
     {
         if(m_isInExit.load() || !(loggerLevel & m_loggerLevels))
         {
             return;
         }
         {
-            std::lock_guard<std::mutex> loc(m_dataMutex);
+            std::scoped_lock<std::mutex> loc(m_dataMutex);
             m_logMessages.emplace(message);
         }
         m_condition.notify_one();
@@ -58,7 +58,7 @@ namespace MasterLog{
                 currentLog = m_logMessages.front();
                 m_logMessages.pop();
             }
-            std::lock_guard<std::mutex> loc(m_witeMutex);
+            std::scoped_lock<std::mutex> loc(m_witeMutex);
             processMessage(currentLog);
         }
     }

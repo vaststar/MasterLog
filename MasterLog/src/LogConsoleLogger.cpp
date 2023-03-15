@@ -15,8 +15,8 @@ namespace MasterLog{
     {
         
     }
-    void LogConsoleLogger::processMessage( std::string message) 
+    void LogConsoleLogger::processMessage(const std::string& message) 
     {
-        std::cout<<std::move(message)<<std::endl;
+        std::cout<<message<<std::endl;
     }
 }

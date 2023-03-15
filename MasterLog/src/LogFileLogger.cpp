@@ -34,7 +34,7 @@ static const std::string ERROR_SPLITSTR = "\\\\";
 #endif
 
 namespace MasterLog{
-    LogFileLogger::LogFileLogger(int logLevels, const std::string &logFullPath, unsigned int maxKeepDays, unsigned int maxSignleSize)
+    LogFileLogger::LogFileLogger(int logLevels, const std::string& logFullPath, unsigned int maxKeepDays, unsigned int maxSignleSize)
         :LogBaseLogger(logLevels)
         ,m_logFilePath(logFullPath)
         ,m_logLevels(logLevels)
@@ -64,7 +64,7 @@ namespace MasterLog{
     {
         return LogAppenderType::FILE;
     }
-    void LogFileLogger::processMessage( std::string message) 
+    void LogFileLogger::processMessage(const std::string& message) 
     {
         if(readyForLog(static_cast<unsigned int>(message.size())) && m_currentFile.is_open())
         {
@@ -188,9 +188,9 @@ namespace MasterLog{
         return true;
     }
 
-    void LogFileLogger::removeOldFiles(const std::vector<std::string> &allFiles)
+    void LogFileLogger::removeOldFiles(const std::vector<std::string>& allFiles)
     {
-        std::for_each(allFiles.begin(),allFiles.end(),[this](const std::string &filePath){
+        std::for_each(allFiles.begin(),allFiles.end(),[this](const std::string& filePath){
             std::smatch sm;
             if(std::regex_match(filePath,sm,std::regex(".*?"+m_baseFileName+"-(\\d{4}-\\d{2}-\\d{2})\\.log.*?")))
             {
@@ -208,7 +208,7 @@ namespace MasterLog{
             }
         });
     }
-    void LogFileLogger::doRollOver(const std::vector<std::string> &allFiles,unsigned int addedSize)
+    void LogFileLogger::doRollOver(const std::vector<std::string>& allFiles,unsigned int addedSize)
     {
         if(!m_currentFile.is_open())
         {
@@ -227,7 +227,7 @@ namespace MasterLog{
                 m_currentFile.close();
             }
             std::vector<std::string> renameVec;
-            std::for_each(allFiles.begin(),allFiles.end(),[this,&renameVec](const std::string &filePath){
+            std::for_each(allFiles.begin(),allFiles.end(),[this,&renameVec](const std::string& filePath){
                 std::smatch sm;
                 if(std::regex_match(filePath,sm,std::regex(".*?"+m_baseFileName+"-"+m_currentFileDate+"\\.log.*?")))
                 {
@@ -236,7 +236,7 @@ namespace MasterLog{
             });
             if(!renameVec.empty())
             {
-                std::stable_sort(renameVec.begin(),renameVec.end(),[](const std::string &ls, const std::string &rs){
+                std::stable_sort(renameVec.begin(),renameVec.end(),[](const std::string& ls, const std::string& rs){
                     std::smatch sm1,sm2;
                     if(std::regex_match(ls,sm1,std::regex(".*?\\.log$")))
                     {
@@ -252,7 +252,7 @@ namespace MasterLog{
                     }
                     return true;
                 });
-                std::for_each(renameVec.begin(),renameVec.end(),[](const std::string &renamePath){
+                std::for_each(renameVec.begin(),renameVec.end(),[](const std::string& renamePath){
                     std::smatch sm;
                     if(std::regex_match(renamePath,sm,std::regex(".*?\\.log$")))
                     {

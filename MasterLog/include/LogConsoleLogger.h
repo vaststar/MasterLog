@@ -12,7 +12,7 @@ namespace MasterLog{
         LogAppenderType getLoggerType()const override;
     protected:
         void initialize() override;
-        void processMessage(std::string message) override;
+        void processMessage(const std::string& message) override;
     };
 }
 #endif//__LogConsoleLogger_h__

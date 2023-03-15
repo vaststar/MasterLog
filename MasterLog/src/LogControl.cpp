@@ -23,7 +23,7 @@ std::shared_ptr<LogControl> LogControl::getInstance()
 
 LogControl::~LogControl()
 {
-    std::lock_guard<std::mutex> lo(m_loggerMutex);
+    std::scoped_lock<std::mutex> lo(m_loggerMutex);
     m_currentLogger.clear();
 }
 
@@ -31,33 +31,33 @@ void LogControl::initConsoleLogger(int logLevels)
 {
     static std::once_flag init_console_flag;
     std::call_once(init_console_flag, [logLevels,this]() {
-        std::lock_guard<std::mutex> lo(m_loggerMutex);
+        std::scoped_lock<std::mutex> lo(m_loggerMutex);
         m_currentLogger.emplace_back(std::make_shared<LogConsoleLogger>(logLevels));
         m_currentLogger.back()->startLog();
     });
 }
 
-void LogControl::initFileLogger( int logLevels, const std::string &logFullPath, unsigned int maxKeepDays, unsigned int maxSingleFileSize)
+void LogControl::initFileLogger( int logLevels, const std::string& logFullPath, unsigned int maxKeepDays, unsigned int maxSingleFileSize)
 {
     static std::once_flag init_file_flag;
     std::call_once(init_file_flag, [logLevels,logFullPath,maxKeepDays,maxSingleFileSize,this]() {
-        std::lock_guard<std::mutex> lo(m_loggerMutex);
+        std::scoped_lock<std::mutex> lo(m_loggerMutex);
         m_currentLogger.emplace_back(std::make_shared<LogFileLogger>(logLevels,logFullPath,maxKeepDays,maxSingleFileSize));
         m_currentLogger.back()->startLog();
     });
 }
 
-void LogControl::writeLog(const std::string &logTag, LogLevel logLevel, const std::string &filePath, 
-              int lineNumber,const std::string &functionName, const std::string &logMessage)
+void LogControl::writeLog(const std::string& logTag, LogLevel logLevel, const std::string& filePath, 
+              int lineNumber,const std::string& functionName, const std::string& logMessage)
 {
     std::string messageLog = formatMessage(logTag,logLevel,filePath,lineNumber,functionName,logMessage);
-    std::lock_guard<std::mutex> lo(m_loggerMutex);
+    std::scoped_lock<std::mutex> lo(m_loggerMutex);
     std::for_each(m_currentLogger.begin(),m_currentLogger.end(),[logLevel,&messageLog,this](std::shared_ptr<LogBaseLogger> logger){
         logger->appendLog(logLevel,messageLog);
     });
 }
-std::string LogControl::formatMessage(const std::string &logTag, LogLevel logLevel, const std::string &filePath, 
-                          int lineNumber,const std::string &functionName, const std::string &logMessage)const
+std::string LogControl::formatMessage(const std::string& logTag, LogLevel logLevel, const std::string& filePath, 
+                          int lineNumber,const std::string& functionName, const std::string& logMessage)const
 {
     //logLevel
     std::string levelMessage = "Debug";

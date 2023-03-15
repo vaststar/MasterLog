@@ -9,18 +9,18 @@ namespace MasterLog{
     class LogFileLogger final: public LogBaseLogger
     {
     public:
-        LogFileLogger(int logLevels, const std::string &logFullPath, unsigned int maxKeepDays, unsigned int maxSignleSize);
+        LogFileLogger(int logLevels, const std::string& logFullPath, unsigned int maxKeepDays, unsigned int maxSignleSize);
         ~LogFileLogger();
         LogAppenderType getLoggerType()const override;
     protected:
         void initialize() override;
-        void processMessage(std::string message) override;
+        void processMessage(const std::string& message) override;
     private:
         void createDir();
         std::vector<std::string> getCurrentFileList()const;
         bool readyForLog(unsigned int addedSize);
-        void removeOldFiles(const std::vector<std::string> &allFiles);
-        void doRollOver(const std::vector<std::string> &allFiles,unsigned int addedSize);
+        void removeOldFiles(const std::vector<std::string>& allFiles);
+        void doRollOver(const std::vector<std::string>& allFiles,unsigned int addedSize);
     private:
         std::string m_logFilePath;
         int m_logLevels;
