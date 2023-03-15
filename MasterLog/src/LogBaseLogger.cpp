@@ -25,7 +25,7 @@ namespace MasterLog{
     {
         std::call_once(start_flag, [&,this]() {
             initialize();
-            m_workThread = std::make_shared<std::thread>(std::bind(&LogBaseLogger::doWorkFunction,this));
+            m_workThread = std::make_unique<std::thread>(std::bind(&LogBaseLogger::doWorkFunction,this));
 #if defined(MasterLog_VERSION_MAJOR) && defined(MasterLog_VERSION_MINOR)
             appendLog(LogLevel::LOG_INFO, std::string("Welcome MasterLog, version: ") + MasterLog_VERSION_MAJOR + "." + MasterLog_VERSION_MINOR + "\n");
 #endif

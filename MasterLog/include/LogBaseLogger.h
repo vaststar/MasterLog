@@ -32,7 +32,7 @@ namespace MasterLog{
         std::atomic<bool> m_isInExit;
         std::once_flag start_flag;
         std::queue<std::string> m_logMessages;
-        std::shared_ptr<std::thread> m_workThread;
+        std::unique_ptr<std::thread> m_workThread;
         std::mutex m_witeMutex;
     };
 }
