@@ -5,22 +5,20 @@ namespace MasterLogUtil{
 void WriteLog(const std::string& logTag, LogLogSpace::LogLevel logLevel, const std::string& filePath, 
                           int lineNumber,const std::string& functionName, const std::string& logMessage)
 {
-    LogLogSpace::LogControl::getInstance()->writeLog(logTag,logLevel,filePath,lineNumber,functionName,logMessage);
+    LogLogSpace::LogControl::getInstance()->writeLog(logTag,static_cast<int>(logLevel),filePath,lineNumber,functionName,logMessage);
 }
 
-void initAllLogs(const std::string& fullPath, int logLevels , int maxKeepDays)
+void InitLogger(const std::vector<std::shared_ptr<LogLogSpace::LoggerBaseConfigure>>& configure)
 {
-    initConsoleLog(logLevels);
-    initFileLog(fullPath, logLevels, maxKeepDays);
-}
-
-void initConsoleLog(int logLevels )
-{
-    LogLogSpace::LogControl::getInstance()->initConsoleLogger(logLevels); 
-}
-
-void initFileLog(const std::string& fullPath, int logLevels, unsigned int maxKeepDays, unsigned int maxSingleFileSize)
-{
-    LogLogSpace::LogControl::getInstance()->initFileLogger(logLevels,fullPath,maxKeepDays,maxSingleFileSize); 
+    std::for_each(configure.cbegin(), configure.cend(), [](const std::shared_ptr<LogLogSpace::LoggerBaseConfigure>& config){
+        if (auto consoleConfig = std::dynamic_pointer_cast<LogLogSpace::LoggerConsoleConfigure>(config))
+        {
+            LogLogSpace::LogControl::getInstance()->initConsoleLogger(consoleConfig->loggerLevels); 
+        }
+        else if (auto fileConfig = std::dynamic_pointer_cast<LogLogSpace::LoggerFileConfigure>(config))
+        {
+            LogLogSpace::LogControl::getInstance()->initFileLogger(fileConfig->loggerLevels, fileConfig->loggerDirPath, fileConfig->loggerBaseName, fileConfig->maxKeepDays, fileConfig->maxSingleFileSize); 
+        }
+    });
 }
 }

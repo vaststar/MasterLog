@@ -7,7 +7,6 @@
 #include <thread>
 #include <mutex>
 #include <condition_variable>
-#include "LogDefine.h"
 
 namespace LogLogSpace{
     class LogBaseLogger
@@ -15,14 +14,14 @@ namespace LogLogSpace{
     public:
         explicit LogBaseLogger(int loglevels);
         virtual ~LogBaseLogger();
-        virtual LogAppenderType getLoggerType()const = 0;
-        void appendLog(LogLevel loggerLevel, const std::string& message);
+        void appendLog(int loggerLevel, const std::string& message);
         void startLog();
     protected:
         virtual void initialize() = 0;
         virtual void processMessage(const std::string& message) = 0;
     private:
         void doWorkFunction();
+        void writeInitLog();
     private:
         int m_loggerLevels;
         std::condition_variable m_condition;

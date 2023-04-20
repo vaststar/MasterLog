@@ -1,5 +1,5 @@
-## Thread-Safe multi-platform log using C++17
+## Thread-Safe multi-platform log using C++20
 
 ### requirement
-* >= c++11
-* >= cmake3.1
+* >= c++20
+* >= cmake3.11

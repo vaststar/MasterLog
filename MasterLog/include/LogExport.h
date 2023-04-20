@@ -5,6 +5,7 @@
 #include <string>
 #include <ostream>
 #include <sstream>
+#include <vector>
 #include "LogDefine.h"
 
 #ifdef MASTERLOG_DLL
@@ -18,14 +19,12 @@
 #endif
 
 namespace MasterLogUtil{
-static const int ALL_LOG_LEVEL = LogLogSpace::LogLevel::LOG_DEBUG|LogLogSpace::LogLevel::LOG_INFO|LogLogSpace::LogLevel::LOG_WARN|LogLogSpace::LogLevel::LOG_ERROR|LogLogSpace::LogLevel::LOG_FATAL;
-static const int EXCLUDE_DEBUG_LOG_LEVEL = LogLogSpace::LogLevel::LOG_INFO|LogLogSpace::LogLevel::LOG_WARN|LogLogSpace::LogLevel::LOG_ERROR|LogLogSpace::LogLevel::LOG_FATAL;
+inline constexpr int ALL_LOG_LEVEL = LogLogSpace::LogLevel::LOG_DEBUG|LogLogSpace::LogLevel::LOG_INFO|LogLogSpace::LogLevel::LOG_WARN|LogLogSpace::LogLevel::LOG_ERROR|LogLogSpace::LogLevel::LOG_FATAL;
+inline constexpr int EXCLUDE_DEBUG_LOG_LEVEL = LogLogSpace::LogLevel::LOG_INFO|LogLogSpace::LogLevel::LOG_WARN|LogLogSpace::LogLevel::LOG_ERROR|LogLogSpace::LogLevel::LOG_FATAL;
 
 LOG_LIB_API void WriteLog(const std::string& logTag, LogLogSpace::LogLevel logLevel, const std::string& filePath, 
                           int lineNumber, const std::string& functionName, const std::string& logMessage);
-LOG_LIB_API void initAllLogs(const std::string& fullPath, int logLevels = ALL_LOG_LEVEL, unsigned int maxKeepDays = 365, unsigned int maxSingleFileSize = 20*1024*1024);
-LOG_LIB_API void initConsoleLog(int logLevels = ALL_LOG_LEVEL);
-LOG_LIB_API void initFileLog(const std::string& fullPath, int logLevels = ALL_LOG_LEVEL, unsigned int maxKeepDays = 365, unsigned int maxSingleFileSize = 20*1024*1024);
+LOG_LIB_API void InitLogger(const std::vector<std::shared_ptr<LogLogSpace::LoggerBaseConfigure>>& configure);
 }
 
 #define LOG_DEBUG(logTag,logMessage) {std::ostringstream _oss; _oss << logMessage;MasterLogUtil::WriteLog(logTag,LogLogSpace::LogLevel::LOG_DEBUG,__FILE__,__LINE__,__FUNCTION__,_oss.str());}

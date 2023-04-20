@@ -31,12 +31,20 @@ namespace LogLogSpace{
         std::call_once(start_flag, [&,this]() {
             initialize();
             m_workThread = std::make_unique<std::thread>(std::bind(&LogBaseLogger::doWorkFunction,this));
-#if defined(MasterLog_VERSION_MAJOR) && defined(MasterLog_VERSION_MINOR)
-            appendLog(LogLevel::LOG_INFO, std::string("Welcome MasterLog, version: ") + MasterLog_VERSION_MAJOR + "." + MasterLog_VERSION_MINOR + "\n");
-#endif
+            writeInitLog();
         });
     }
-    void LogBaseLogger::appendLog( LogLevel loggerLevel, const std::string& message)
+
+    void LogBaseLogger::writeInitLog()
+    {
+#if defined(MasterLog_VERSION_MAJOR) && defined(MasterLog_VERSION_MINOR)
+        std::scoped_lock<std::mutex> loc(m_dataMutex);
+        m_logMessages.push(std::string("Welcome MasterLog, version: ") + MasterLog_VERSION_MAJOR + "." + MasterLog_VERSION_MINOR + "\n");
+        m_condition.notify_one();
+#endif
+    }
+
+    void LogBaseLogger::appendLog(int loggerLevel, const std::string& message)
     {
         std::scoped_lock<std::mutex> loc(m_dataMutex);
         if(m_isInExit || !(loggerLevel & m_loggerLevels))

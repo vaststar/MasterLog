@@ -9,7 +9,8 @@
 
 void testConsoleLog()
 {
-	MasterLogUtil::initConsoleLog();
+	auto configure = std::make_shared<LogLogSpace::LoggerConsoleConfigure>(MasterLogUtil::ALL_LOG_LEVEL);
+	MasterLogUtil::InitLogger({configure});
 	TEST_LOG_DEBUG("startTest");
 	std::list<std::thread> aaa;
 	for (int i = 0;i < 3000 ;++i)
@@ -25,9 +26,13 @@ void testConsoleLog()
 	}
 	std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
+
 void testFileLog()
 {
-	MasterLogUtil::initFileLog(".\\testMkdir\\tedir\\test",MasterLogUtil::ALL_LOG_LEVEL,365,2*1024*1024);
+	std::string dirPath = "./testMkdir/teestDD";
+	std::string baseFileName = "testD";
+	auto configure = std::make_shared<LogLogSpace::LoggerFileConfigure>(MasterLogUtil::ALL_LOG_LEVEL, dirPath, baseFileName, 180, 20*1024*1024);
+	MasterLogUtil::InitLogger({configure});
 	std::list<std::thread> aaa;
 	for (int i = 0;i < 2000 ;++i)
 	{

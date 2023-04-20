@@ -1,7 +1,6 @@
 #ifndef __LogConsoleLogger_h__
 #define __LogConsoleLogger_h__
 #include <string>
-#include "LogDefine.h"
 #include "LogBaseLogger.h"
 namespace LogLogSpace{
     class LogConsoleLogger final: public LogBaseLogger
@@ -9,7 +8,6 @@ namespace LogLogSpace{
     public:
         explicit LogConsoleLogger(int loggerLevels);
         ~LogConsoleLogger()=default;
-        LogAppenderType getLoggerType()const override;
     protected:
         void initialize() override;
         void processMessage(const std::string& message) override;
