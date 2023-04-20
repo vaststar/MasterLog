@@ -1,5 +1,5 @@
 # Thread-Safe log using C++
-A very nice log in c++11 written by Thomas Zhu.
+A very nice log in c++20 written by Thomas Zhu.
 
 # Usage
 * firstly, link library in your project-set
@@ -15,7 +15,21 @@ A very nice log in c++11 written by Thomas Zhu.
 ## Using in code
 * `#include "LogExport.h"`
 * define your own macro with log-tag like `#define TEST_LOG_DEBUG(message) LOG_DEBUG("TEST_LOG_TAG",message)`
-* init log type , console: `MasterLogUtil::InitLogger({std::make_shared<LogLogSpace::LoggerConsoleConfigure>(MasterLogUtil::ALL_LOG_LEVEL)});`; filelog: `MasterLogUtil::InitLogger(std::make_shared<LogLogSpace::LoggerFileConfigure>(MasterLogUtil::ALL_LOG_LEVEL, dirPath, baseFileName, 180, 20*1024*1024)})`
+* init logger with configure
+```c++
+//define your configure, print all level log
+auto configure = std::make_shared<LogLogSpace::LoggerConsoleConfigure>(MasterLogUtil::ALL_LOG_LEVEL);
+MasterLogUtil::InitLogger({configure});
+```
+```c++
+//define your configure, eg. store at ./testMkdir/teestDD/testFile-2022-03-04.log
+std::string dirPath = "./testMkdir/teestDD";//dirpath
+std::string baseFileName = "testFile";//file name
+unsigned int maxKeepDays = 180; //180day
+unsigned int maxSingleFileSize = 20*1024*1024; //20M
+auto configure = std::make_shared<LogLogSpace::LoggerFileConfigure>(MasterLogUtil::ALL_LOG_LEVEL, dirPath,baseFileName, maxKeepDays, maxSingleFileSize);
+MasterLogUtil::InitLogger({configure});
+```
 * use log macro in your code, eg `TEST_LOG_DEBUG("testlog"<<111);`
 
 # Requirement
