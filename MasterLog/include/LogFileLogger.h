@@ -9,7 +9,7 @@ namespace LogLogSpace{
     class LogFileLogger final: public LogBaseLogger
     {
     public:
-        LogFileLogger(int logLevels, const std::string& logDirPath, const std::string& logBaseName, unsigned int maxKeepDays, unsigned int maxSignleSize);
+        LogFileLogger(int logLevels, const std::string& logDirPath, const std::string& logBaseName, unsigned int maxKeepDays, unsigned int maxSignleSize, const std::string& loggerName);
         ~LogFileLogger();
     protected:
         void initialize() override;

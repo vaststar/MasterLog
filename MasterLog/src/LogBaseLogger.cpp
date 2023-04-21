@@ -1,13 +1,15 @@
 #include "LogBaseLogger.h"
 
+#include <format>
 #include <functional>
 
 #include "MasterLogConfig.h"
 
 namespace LogLogSpace{
-    LogBaseLogger::LogBaseLogger(int loglevels)
+    LogBaseLogger::LogBaseLogger(int loglevels, const std::string& loggerName)
         :m_isInExit(false)
         ,m_loggerLevels(loglevels)
+        ,m_loggerName(loggerName)
     {
 
     }
@@ -26,6 +28,11 @@ namespace LogLogSpace{
         std::scoped_lock<std::mutex> loc(m_witeMutex);
     }
 
+    std::string LogBaseLogger::getLoggerName() const
+    {
+        return m_loggerName;
+    }
+
     void LogBaseLogger::startLog()
     {
         std::call_once(start_flag, [&,this]() {
@@ -39,7 +46,8 @@ namespace LogLogSpace{
     {
 #if defined(MasterLog_VERSION_MAJOR) && defined(MasterLog_VERSION_MINOR)
         std::scoped_lock<std::mutex> loc(m_dataMutex);
-        m_logMessages.push(std::string("Welcome MasterLog, version: ") + MasterLog_VERSION_MAJOR + "." + MasterLog_VERSION_MINOR + "\n");
+        // m_logMessages.emplace(std::format("Welcome to MasterLog: {}, version: {}.{}\n",getLoggerName(),MasterLog_VERSION_MAJOR,MasterLog_VERSION_MINOR));
+        m_logMessages.emplace(std::string("Welcome to MasterLog: ").append(getLoggerName()).append(", version: ").append(MasterLog_VERSION_MAJOR).append(".").append(MasterLog_VERSION_MINOR).append("\n"));
         m_condition.notify_one();
 #endif
     }

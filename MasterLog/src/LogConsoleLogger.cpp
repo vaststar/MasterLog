@@ -2,8 +2,8 @@
 #include <iostream>
 
 namespace LogLogSpace{
-    LogConsoleLogger::LogConsoleLogger(int loggerLevels)
-        :LogBaseLogger(loggerLevels)
+    LogConsoleLogger::LogConsoleLogger(int loggerLevels, const std::string& loggerName)
+        :LogBaseLogger(loggerLevels, loggerName)
     {
 
     }
@@ -12,7 +12,7 @@ namespace LogLogSpace{
     {
         
     }
-    
+
     void LogConsoleLogger::processMessage(const std::string& message) 
     {
         std::cout<<message<<std::endl;

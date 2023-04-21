@@ -14,10 +14,10 @@ namespace LogLogSpace{
     public:
         static std::shared_ptr<LogControl> getInstance();
 
-        void initConsoleLogger(int logLevels);
-        void initFileLogger( int logLevels, const std::string& logDirPath, const std::string& logBaseName, unsigned int maxKeepDays, unsigned int maxSingleFileSize);
+        void initConsoleLogger(int logLevels, const std::string& loggerName);
+        void initFileLogger( int logLevels, const std::string& logDirPath, const std::string& logBaseName, unsigned int maxKeepDays, unsigned int maxSingleFileSize, const std::string& loggerName);
         void writeLog(const std::string& logTag, int logLevel, const std::string& filePath, 
-                      int lineNumber,const std::string& functionName, const std::string& logMessage);
+                      int lineNumber,const std::string& functionName, const std::string& logMessage, const std::string& loggerName);
     private:
         std::mutex m_loggerMutex;
         std::list<std::unique_ptr<LogBaseLogger>> m_currentLogger;

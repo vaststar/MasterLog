@@ -12,10 +12,11 @@ namespace LogLogSpace{
     class LogBaseLogger
     {
     public:
-        explicit LogBaseLogger(int loglevels);
+        explicit LogBaseLogger(int loglevels, const std::string& loggerName);
         virtual ~LogBaseLogger();
         void appendLog(int loggerLevel, const std::string& message);
         void startLog();
+        std::string getLoggerName() const;
     protected:
         virtual void initialize() = 0;
         virtual void processMessage(const std::string& message) = 0;
@@ -24,6 +25,7 @@ namespace LogLogSpace{
         void writeInitLog();
     private:
         int m_loggerLevels;
+        std::string m_loggerName;
         std::condition_variable m_condition;
         std::mutex m_dataMutex;
         bool m_isInExit;

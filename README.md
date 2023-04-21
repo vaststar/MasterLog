@@ -13,24 +13,32 @@ A very nice log in c++20 written by Thomas Zhu.
 * link target to you library, `target_link_libraries(testProgram MasterLogExport::MasterLog)`
 
 ## Using in code
-* `#include "LogExport.h"`
-* define your own macro with log-tag like `#define TEST_LOG_DEBUG(message) LOG_DEBUG("TEST_LOG_TAG",message)`
-* init logger with configure
 ```c++
+#include "LogExport.h"
 //define your configure, print all level log
 auto configure = std::make_shared<LogLogSpace::LoggerConsoleConfigure>(MasterLogUtil::ALL_LOG_LEVEL);
 MasterLogUtil::InitLogger({configure});
+//define your log macro
+#define TEST_CONSOLE_LOG_DEBUG(message) LOG_DEBUG("TEST_LOG",message,MasterLogUtil::Console_Logger_Name)
+//usage
+
+TEST_CONSOLE_LOG_DEBUG("startTest");
 ```
 ```c++
+#include "LogExport.h"
 //define your configure, eg. store at ./testMkdir/teestDD/testFile-2022-03-04.log
-std::string dirPath = "./testMkdir/teestDD";//dirpath
-std::string baseFileName = "testFile";//file name
-unsigned int maxKeepDays = 180; //180day
-unsigned int maxSingleFileSize = 20*1024*1024; //20M
-auto configure = std::make_shared<LogLogSpace::LoggerFileConfigure>(MasterLogUtil::ALL_LOG_LEVEL, dirPath,baseFileName, maxKeepDays, maxSingleFileSize);
-MasterLogUtil::InitLogger({configure});
+#define TEST_DEFAULT_FILE_LOG_DEBUG(message) LOG_DEBUG("TEST_DEFAULT_FILE_LOG",message,MasterLogUtil::Default_File_Logger_Name)
+#define TEST_APP_FILE_LOG_DEBUG(message) LOG_DEBUG("TEST_APP_FILE_LOG",message,"APP")
+std::string dirPath = "./testMakeDir/testFile";
+std::string baseFileName = "default_log";
+auto configure = std::make_shared<LogLogSpace::LoggerFileConfigure>(MasterLogUtil::ALL_LOG_LEVEL, dirPath,baseFileName, 180, 20*1024, MasterLogUtil::Default_File_Logger_Name);
+std::string baseFileName_app = "app";
+auto configure_app = std::make_shared<LogLogSpace::LoggerFileConfigure>(MasterLogUtil::ALL_LOG_LEVEL, dirPath,baseFileName_app, 180, 20*1024, "APP");
+MasterLogUtil::InitLogger({configure, configure_app});
+//usage
+TEST_DEFAULT_FILE_LOG_DEBUG("to default_log");
+TEST_APP_FILE_LOG_DEBUG("to app log");
 ```
-* use log macro in your code, eg `TEST_LOG_DEBUG("testlog"<<111);`
 
 # Requirement
 * >= c++20

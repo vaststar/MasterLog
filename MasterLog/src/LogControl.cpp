@@ -29,33 +29,38 @@ LogControl::~LogControl()
     m_currentLogger.clear();
 }
 
-void LogControl::initConsoleLogger(int logLevels)
+void LogControl::initConsoleLogger(int logLevels, const std::string& loggerName)
 {
     static std::once_flag init_console_flag;
-    std::call_once(init_console_flag, [logLevels,this]() {
+    std::call_once(init_console_flag, [logLevels, loggerName, this]() {
         std::scoped_lock<std::mutex> lo(m_loggerMutex);
-        m_currentLogger.emplace_back(std::make_unique<LogConsoleLogger>(logLevels));
+        m_currentLogger.emplace_back(std::make_unique<LogConsoleLogger>(logLevels, loggerName));
         m_currentLogger.back()->startLog();
     });
 }
 
-void LogControl::initFileLogger( int logLevels, const std::string& logDirPath, const std::string& logBaseName, unsigned int maxKeepDays, unsigned int maxSingleFileSize)
+void LogControl::initFileLogger( int logLevels, const std::string& logDirPath, const std::string& logBaseName, unsigned int maxKeepDays, unsigned int maxSingleFileSize, const std::string& loggerName)
 {
-    static std::once_flag init_file_flag;
-    std::call_once(init_file_flag, [logLevels,logDirPath,logBaseName,maxKeepDays,maxSingleFileSize,this]() {
-        std::scoped_lock<std::mutex> lo(m_loggerMutex);
-        m_currentLogger.emplace_back(std::make_unique<LogFileLogger>(logLevels,logDirPath,logBaseName,maxKeepDays,maxSingleFileSize));
+    std::scoped_lock<std::mutex> lo(m_loggerMutex);
+    if(std::none_of(m_currentLogger.cbegin(), m_currentLogger.cend(), [loggerName](const auto& logger){
+        return logger->getLoggerName() == loggerName;
+    }))
+    {
+        m_currentLogger.emplace_back(std::make_unique<LogFileLogger>(logLevels, logDirPath, logBaseName, maxKeepDays, maxSingleFileSize, loggerName));
         m_currentLogger.back()->startLog();
-    });
+    }
 }
 
 void LogControl::writeLog(const std::string& logTag, int logLevel, const std::string& filePath, 
-              int lineNumber,const std::string& functionName, const std::string& logMessage)
+              int lineNumber,const std::string& functionName, const std::string& logMessage, const std::string& loggerName)
 {
-    std::string messageLog = formatMessage(logTag,logLevel,filePath,lineNumber,functionName,logMessage);
+    std::string messageLog = formatMessage(logTag,logLevel, filePath, lineNumber, functionName, logMessage);
     std::scoped_lock<std::mutex> lo(m_loggerMutex);
-    std::for_each(m_currentLogger.begin(),m_currentLogger.end(),[logLevel,&messageLog,this](std::unique_ptr<LogBaseLogger>& logger){
-        logger->appendLog(logLevel,messageLog);
+    std::for_each(m_currentLogger.begin(),m_currentLogger.end(),[logLevel, &messageLog, loggerName](std::unique_ptr<LogBaseLogger>& logger){
+        if (logger->getLoggerName() == loggerName)
+        {
+            logger->appendLog(logLevel,messageLog);
+        }
     });
 }
 

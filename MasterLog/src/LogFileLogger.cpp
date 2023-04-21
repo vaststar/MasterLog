@@ -7,8 +7,8 @@
 #include <filesystem>
 
 namespace LogLogSpace{
-    LogFileLogger::LogFileLogger(int logLevels, const std::string& logDirPath, const std::string& logBaseName, unsigned int maxKeepDays, unsigned int maxSignleSize)
-        :LogBaseLogger(logLevels)
+    LogFileLogger::LogFileLogger(int logLevels, const std::string& logDirPath, const std::string& logBaseName, unsigned int maxKeepDays, unsigned int maxSignleSize, const std::string& loggerName)
+        :LogBaseLogger(logLevels, loggerName)
         ,m_logDirPath(logDirPath)
         ,m_baseFileName(logBaseName)
         ,m_logLevels(logLevels)
@@ -26,6 +26,7 @@ namespace LogLogSpace{
             m_currentFile.close();
         }
     }
+
     void LogFileLogger::initialize()
     {
         std::filesystem::create_directories(m_logDirPath);
@@ -122,7 +123,6 @@ namespace LogLogSpace{
         }
         if(m_currentSize + addedSize > m_maxSingleSize)
         {
-            //do roll over
             if(m_currentFile.is_open())
             {
                 m_currentFile.flush();

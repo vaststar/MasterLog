@@ -6,7 +6,7 @@ namespace LogLogSpace{
     class LogConsoleLogger final: public LogBaseLogger
     {
     public:
-        explicit LogConsoleLogger(int loggerLevels);
+        explicit LogConsoleLogger(int loggerLevels, const std::string& loggerName);
         ~LogConsoleLogger()=default;
     protected:
         void initialize() override;

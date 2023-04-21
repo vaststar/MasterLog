@@ -37,19 +37,22 @@ namespace LogLogSpace{
 
     struct LoggerBaseConfigure{
         virtual ~LoggerBaseConfigure() = default;
-        explicit LoggerBaseConfigure(int _loggerLevels): loggerLevels(_loggerLevels)
+        explicit LoggerBaseConfigure(int _loggerLevels, const std::string& _loggerName)
+            : loggerLevels(_loggerLevels)
+            , loggerName(_loggerName)
         {}
         int loggerLevels{LogLogSpace::LogLevel::LOG_DEBUG|LogLogSpace::LogLevel::LOG_INFO|LogLogSpace::LogLevel::LOG_WARN|LogLogSpace::LogLevel::LOG_ERROR|LogLogSpace::LogLevel::LOG_FATAL};//use LogLevel &
+        std::string loggerName;
     };
 
     struct LoggerConsoleConfigure: public LoggerBaseConfigure{
-        explicit LoggerConsoleConfigure(int _loggerLevels): LoggerBaseConfigure(_loggerLevels)
+        explicit LoggerConsoleConfigure(int _loggerLevels, const std::string& _loggerName): LoggerBaseConfigure(_loggerLevels, _loggerName)
         {}
     };
 
     struct LoggerFileConfigure: public LoggerBaseConfigure{
-        LoggerFileConfigure(int _loggerLevels, const std::string& _loggerDirPath, const std::string& _loggerBaseName, unsigned int _maxKeepDays, unsigned int _maxSingleFileSize)
-            : LoggerBaseConfigure(_loggerLevels)
+        LoggerFileConfigure(int _loggerLevels, const std::string& _loggerDirPath, const std::string& _loggerBaseName, unsigned int _maxKeepDays, unsigned int _maxSingleFileSize, const std::string& _loggerName)
+            : LoggerBaseConfigure(_loggerLevels, _loggerName)
             , loggerDirPath(_loggerDirPath)
             , loggerBaseName(_loggerBaseName)
             , maxKeepDays(_maxKeepDays)
