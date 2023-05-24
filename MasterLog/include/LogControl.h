@@ -9,7 +9,7 @@
 class LogBaseLogger;
 
 namespace LogLogSpace{
-    class LogControl final
+    class LogControl final: std::enable_shared_from_this<LogControl>
     {
     public:
         static std::shared_ptr<LogControl> getInstance();

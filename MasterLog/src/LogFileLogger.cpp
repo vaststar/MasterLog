@@ -90,8 +90,7 @@ namespace LogLogSpace{
     void LogFileLogger::removeOldFiles(const std::vector<std::string>& allFiles)
     {
         std::for_each(allFiles.begin(),allFiles.end(),[this](const std::string& filePath){
-            std::smatch sm;
-            if(std::regex_match(filePath,sm,std::regex(".*?"+m_baseFileName+"-(\\d{4}-\\d{2}-\\d{2})\\.log.*?")))
+            if(std::smatch sm; std::regex_match(filePath,sm,std::regex(".*?"+m_baseFileName+"-(\\d{4}-\\d{2}-\\d{2})\\.log.*?")))
             {
                 std::tm tm;
                 std::istringstream ss(sm[1].str()+" 0:0:0");
@@ -130,8 +129,8 @@ namespace LogLogSpace{
             }
             std::vector<std::string> renameVec;
             std::for_each(allFiles.begin(),allFiles.end(),[this,&renameVec](const std::string& filePath){
-                std::smatch sm;
-                if(std::regex_match(filePath,sm,std::regex(".*?"+m_baseFileName+"-"+m_currentFileDate+"\\.log.*?")))
+                
+                if(std::smatch sm; std::regex_match(filePath,sm,std::regex(".*?"+m_baseFileName+"-"+m_currentFileDate+"\\.log.*?")))
                 {
                     renameVec.push_back(filePath);
                 }
@@ -139,24 +138,22 @@ namespace LogLogSpace{
             if(!renameVec.empty())
             {
                 std::stable_sort(renameVec.begin(),renameVec.end(),[](const std::string& ls, const std::string& rs){
-                    std::smatch sm1,sm2;
-                    if(std::regex_match(ls,sm1,std::regex(".*?\\.log$")))
+                    if(std::smatch sm1,sm2; std::regex_match(ls,sm1,std::regex(".*?\\.log$")))
                     {
                         return false;
                     }
-                    if(std::regex_match(rs,sm2,std::regex(".*?\\.log$")))
+                    else if(std::regex_match(rs,sm2,std::regex(".*?\\.log$")))
                     {
                         return true;
                     }
-                    if(std::regex_match(ls,sm1,std::regex(".*?\\.log\\.(\\d+)$")) && std::regex_match(rs,sm2,std::regex(".*?\\.log\\.(\\d+)$")))
+                    else if(std::regex_match(ls,sm1,std::regex(".*?\\.log\\.(\\d+)$")) && std::regex_match(rs,sm2,std::regex(".*?\\.log\\.(\\d+)$")))
                     {
                         return std::stoi(sm1[1].str()) > std::stoi(sm2[1].str()); 
                     }
                     return true;
                 });
                 std::for_each(renameVec.begin(),renameVec.end(),[](const std::string& renamePath){
-                    std::smatch sm;
-                    if(std::regex_match(renamePath,sm,std::regex(".*?\\.log$")))
+                    if(std::smatch sm; std::regex_match(renamePath,sm,std::regex(".*?\\.log$")))
                     {
                         std::filesystem::rename(renamePath,renamePath+".1");
                     }
