@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.11)
 
-set(MasterLog_VERSION_MAJOR 2)
-set(MasterLog_VERSION_MINOR 1)
+set(MasterLog_VERSION_MAJOR 1)
+set(MasterLog_VERSION_MINOR 0)
 set(ProjectName "MasterLog")
 set(ProjectDesc "Thread-safe logger with c++")
 set(ExportProjectNameSpace "MasterLogExport")
@@ -44,9 +44,9 @@ endif(WIN32)
 install(FILES include/LogDefine.h include/LogExport.h  DESTINATION ${PROJECT_NAME}/include)
 install(TARGETS ${PROJECT_NAME} 
         EXPORT ${PROJECT_NAME}Config
-		RUNTIME DESTINATION ${PROJECT_NAME}/bin
-		LIBRARY DESTINATION ${PROJECT_NAME}/bin
-		ARCHIVE DESTINATION ${PROJECT_NAME}/lib)
+	RUNTIME DESTINATION ${PROJECT_NAME}/bin
+	LIBRARY DESTINATION ${PROJECT_NAME}/bin
+	ARCHIVE DESTINATION ${PROJECT_NAME}/lib)
 
 install(EXPORT ${PROJECT_NAME}Config 
         DESTINATION ${PROJECT_NAME}/cmake
