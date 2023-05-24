@@ -46,8 +46,9 @@ TEST_APP_FILE_LOG_DEBUG("to app log");
 
 # Install
 * make and cd in `build` dir
-* run commond: `cmake .. && make && make install`
+* run command: `cmake .. && make && make install`
 
 # Test
 * make and cd in `build` dir
-* run commond: `cmake .. && make && ctest -V`
+* for cmake test, run command: `cmake .. && make && ctest -V`
+* for catch2 test, run command: `cmake .. && make` and run testLog_catch2

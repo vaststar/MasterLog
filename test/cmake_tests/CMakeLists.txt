@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.11)
-project(testLog)
+project(testLog_cmake)
 
 #build exe
 aux_source_directory(${CMAKE_CURRENT_LIST_DIR} DIR_SRCS)
