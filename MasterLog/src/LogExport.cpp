@@ -1,5 +1,6 @@
 #include "LogExport.h"
 #include "LogControl.h"
+#include <algorithm>
 
 namespace MasterLogUtil{
 void WriteLog(const std::string& logTag, LogLogSpace::LogLevel logLevel, const std::string& filePath, 
