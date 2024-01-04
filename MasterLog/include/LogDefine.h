@@ -1,6 +1,8 @@
 #ifndef __LogDefine_h__
 #define __LogDefine_h__
 
+#include <string>
+
 namespace LogLogSpace{
     enum class LogLevel{
         LOG_DEBUG = 1 << 0,

@@ -27,6 +27,7 @@ namespace LogLogSpace{
                                   int lineNumber,const std::string& functionName, const std::string& logMessage)const;
         std::string getCurrentFormatedTime() const;
         std::string getLogLevelString(int logLevel) const;
+        std::string getCurrentThreadId() const;
     private:
         LogControl() = default;
         static std::shared_ptr<LogControl> _instance;

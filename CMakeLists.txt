@@ -4,7 +4,6 @@ project(loggerProject  VERSION 1.0
                 LANGUAGES CXX
 )
 
-# Remove 'lib' prefix for shared libraries on Windows
 set(CMAKE_DEBUG_POSTFIX "_d")
 set(CMAKE_RELEASE_POSTFIX "_r")
 
