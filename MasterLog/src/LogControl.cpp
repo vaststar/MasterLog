@@ -8,6 +8,7 @@
 #include <ctime>
 #include <iomanip>
 #include <sstream>
+#include <format>
 
 #include "LogConsoleLogger.h"
 #include "LogFileLogger.h"
@@ -66,15 +67,14 @@ void LogControl::writeLog(const std::string& logTag, int logLevel, const std::st
 
 std::string LogControl::getCurrentFormatedTime() const
 {
-    std::chrono::system_clock::time_point tp = std::chrono::system_clock::now();
-	time_t raw_time = std::chrono::system_clock::to_time_t(tp);
-	std::chrono::milliseconds ms = std::chrono::duration_cast<std::chrono::milliseconds>(tp.time_since_epoch());
-	std::string milliseconds_str = std::to_string(ms.count() % 1000);
-	if (milliseconds_str.length() < 3) {
-		milliseconds_str = std::string(3 - milliseconds_str.length(), '0') + milliseconds_str;
-	}
-	std::stringstream ss;
-	ss << std::put_time(std::localtime(&raw_time), "%Y-%m-%d %H:%M:%S,")<<milliseconds_str;
+    const auto start = std::chrono::utc_clock::now();
+    return std::format("{:%Y-%m-%dT%H:%M:%SZ}",start);
+}
+
+std::string LogControl::getCurrentThreadId() const
+{
+    std::stringstream ss;
+    ss << "0x" << std::hex << std::this_thread::get_id();
     return ss.str();
 }
 
@@ -111,9 +111,6 @@ std::string LogControl::formatMessage(const std::string& logTag, int logLevel, c
         fileString = std::string(40 - fileString.length(),' ') + fileString;
     }
     
-    std::stringstream result;
-    result << getCurrentFormatedTime() << " " << getLogLevelString(logLevel) << " [" << std::this_thread::get_id() << "] ["<< fileString << "] ["
-           << logTag << "] [" << functionName << "] - " << logMessage <<"\n";
-    return result.str();
+    return std::format("{} {} [{}] [{}] [{}] [{}] {}\n", getCurrentFormatedTime(), getLogLevelString(logLevel), getCurrentThreadId(), fileString, logTag, functionName, logMessage);
 }
 }
