@@ -1,5 +1,5 @@
 #include <catch2/catch_test_macros.hpp>
-#include "LogExport.h"
+#include <MasterLog/LogExport.h>
 
 #include <iostream>
 

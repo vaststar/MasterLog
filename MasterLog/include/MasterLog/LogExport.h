@@ -6,7 +6,7 @@
 #include <ostream>
 #include <sstream>
 #include <vector>
-#include "LogDefine.h"
+#include <MasterLog/LogDefine.h>
 
 #ifdef MASTERLOG_DLL
 #ifdef MASTERLOG_LIB

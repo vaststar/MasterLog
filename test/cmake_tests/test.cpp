@@ -1,4 +1,4 @@
-#include "LogExport.h"
+#include <MasterLog/LogExport.h>
 #include <iostream>
 
 #include <list>

@@ -14,7 +14,7 @@ A very nice log in c++20 written by Thomas Zhu.
 
 ## Using in code
 ```c++
-#include "LogExport.h"
+#include <MasterLog/LogExport.h>
 //define your configure, print all level log
 auto configure = std::make_shared<LogLogSpace::LoggerConsoleConfigure>(MasterLogUtil::ALL_LOG_LEVEL);
 MasterLogUtil::InitLogger({configure});
@@ -25,7 +25,7 @@ MasterLogUtil::InitLogger({configure});
 TEST_CONSOLE_LOG_DEBUG("startTest");
 ```
 ```c++
-#include "LogExport.h"
+#include <MasterLog/LogExport.h>
 //define your configure, eg. store at ./testMkdir/teestDD/testFile-2022-03-04.log
 #define TEST_DEFAULT_FILE_LOG_DEBUG(message) LOG_DEBUG("TEST_DEFAULT_FILE_LOG",message,MasterLogUtil::Default_File_Logger_Name)
 #define TEST_APP_FILE_LOG_DEBUG(message) LOG_DEBUG("TEST_APP_FILE_LOG",message,"APP")
@@ -42,7 +42,7 @@ TEST_APP_FILE_LOG_DEBUG("to app log");
 
 # Requirement
 * >= c++20
-* >= cmake3.11
+* >= cmake3.24
 
 # Install
 * make and cd in `build` dir

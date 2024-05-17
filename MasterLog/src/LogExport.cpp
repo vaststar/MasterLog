@@ -1,4 +1,4 @@
-#include "LogExport.h"
+#include <MasterLog/LogExport.h>
 #include "LogControl.h"
 #include <algorithm>
 
