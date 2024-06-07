@@ -22,4 +22,9 @@ void InitLogger(const std::vector<std::shared_ptr<LogLogSpace::LoggerBaseConfigu
         }
     });
 }
+
+void StopLogger()
+{
+    LogLogSpace::LogControl::getInstance()->stopLogger();
+}
 }

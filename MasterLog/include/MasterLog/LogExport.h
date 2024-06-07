@@ -27,6 +27,7 @@ inline constexpr auto Default_File_Logger_Name = "DefaultFileLogger";
 LOG_LIB_API void WriteLog(const std::string& logTag, LogLogSpace::LogLevel logLevel, const std::string& filePath, 
                           int lineNumber, const std::string& functionName, const std::string& logMessage, const std::string& loggerName);
 LOG_LIB_API void InitLogger(const std::vector<std::shared_ptr<LogLogSpace::LoggerBaseConfigure>>& configure);
+LOG_LIB_API void StopLogger();
 }
 
 #define LOG_DEBUG(logTag,logMessage,loggerName) {std::ostringstream _oss; _oss << logMessage;MasterLogUtil::WriteLog(logTag,LogLogSpace::LogLevel::LOG_DEBUG,__FILE__,__LINE__,__FUNCTION__,_oss.str(),loggerName);}
